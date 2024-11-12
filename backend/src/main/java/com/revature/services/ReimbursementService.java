@@ -45,4 +45,30 @@ public class ReimbursementService {
         return rDAO.findByEmployeeUserId(userId);
 
     }
+
+    public List<Reimbursement> getReimbursementByStatus(String status) {
+        return rDAO.findByStatus(status);
+    }
+
+    public List<Reimbursement> getReimbursementByUserIdAndStatus(int id, String status) {
+        return rDAO.findByEmployeeUserIdAndStatus(id, status);
+    }
+
+    public Reimbursement updateReimbursementStatus(int id, String status) {
+        Reimbursement r = rDAO.findById(id).orElseThrow(() ->
+            new IllegalArgumentException("No reimbursement found with id: " + id));
+        r.setStatus(status);
+
+        rDAO.save(r);
+        return r;
+    }
+
+    public Reimbursement updateReimbursementDescription(int id, String description) {
+        Reimbursement r = rDAO.findById(id).orElseThrow(() ->
+            new IllegalArgumentException("No reimbursement found with id: " + id));
+        r.setDescription(description);
+
+        rDAO.save(r);
+        return r;
+    }
 }

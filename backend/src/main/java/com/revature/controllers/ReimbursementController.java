@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reimbursements")
+@CrossOrigin
 public class ReimbursementController {
 
     private ReimbursementService reimbursementService;
@@ -44,6 +45,30 @@ public class ReimbursementController {
 
     }
 
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserId(@PathVariable String status){
+
+        //Another one liner
+        return ResponseEntity.ok(reimbursementService.getReimbursementByStatus(status));
+
+    }
+
+    @GetMapping("/employees/{userId}/status/{status}")
+    public ResponseEntity<List<Reimbursement>> getReimbursementsByUserIdAndStatus(
+            @PathVariable int userId, @PathVariable String status) {
+        return ResponseEntity.ok(reimbursementService.getReimbursementByUserIdAndStatus(userId, status));
+    }
+
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<Reimbursement> updateReimbursementStatus(@PathVariable int id, @RequestBody String status) {
+        return ResponseEntity.ok(reimbursementService.updateReimbursementStatus(id, status));
+    }
+
+    @PatchMapping("/description/{id}")
+    public ResponseEntity<Reimbursement> updateReimbursementDescription(@PathVariable int id, @RequestBody String description) {
+        return ResponseEntity.ok(reimbursementService.updateReimbursementDescription(id, description));
+    }
 
     //Exception Handler for IllegalArgumentException
     @ExceptionHandler(IllegalArgumentException.class)
@@ -51,4 +76,5 @@ public class ReimbursementController {
         //returns a 400 BAD REQUEST status code with the message from the exception that got caught
         return ResponseEntity.status(400).body(e.getMessage());
     }
+
 }
